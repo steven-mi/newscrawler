@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+beautifulsoup4 = "*"
+six = "*"
+newspaper3k = "*"
+feedparser = "*"
+
+
+[dev-packages]
+"flake8" = "*"
+pytest = "*"
+ipython = "*"
+mypy = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+twine = "*"
+
+[requires]
+python_version = "3.7"

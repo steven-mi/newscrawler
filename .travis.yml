@@ -1,0 +1,17 @@
+ncsudo: required
+language: python
+python:
+- 3.7-dev
+install:
+- pip install pipenv
+- pipenv install --dev
+script:
+- pipenv run pytest
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: OYwq6zSdmMaAXSdeHuMmf9wqYG4E3f1Y1Hjh2MD9qbbMRhPMLC4RQKozrQPCklKTqVNnLX8HYYwl9MVmHCdT4ZYfnEnahtDRqq6RGJcFYJw0nEjPQ8/mPjuA4mO2NavW0udZ5tiLHIT5lG5ePbSPBudrdM5fJrngmn5+QcpJSFfgWc/z8t8WR6y1znTMrwH5STIvOyqJSoq+S27Fr6+29RWgBbeC9sKWAs+H79ArurPpX6AvVNEiWwJSOkPq06NWPfc9myC4+P3mmcnYEYzCG+89t1QFg99ZWYOAKu6rx2fIMegmdP+8tbuxYNQZx75RqoZ4obrI3au0lZXvXCbCDGbykn2PZtfbgxOm7xnlhwrLuAa0FSUesbkFB/p1CVC/YXvtux2vXvzemSr2cVsP0CLhN6XtK2AbgtO1AebxS2nyBgz5x+Ft5rGJYhBZTqdVCZhkqbnVTyAia4STLJfW0q+kc125NERvypLSVxdl1/4DI3f+VnYA1F0Faydzi/Dmfbgn8p35iPrPMikuavvyt1Q8rES3G77orMrZ3IvY1a81n63nTm22KlczpDFO678XZxSAioeL6rGpB0BtTXVwbTqcS3tqkoNmT3uFcUBh3qDc0QHq+qcmGiEKlh8Xgtq5fHZIW7slqfU4DFzVCq6gzpxzqTyyf06ggOOetyD8IMo=
+  on:
+    all_branches: true
+  distributions: sdist bdist_wheel
