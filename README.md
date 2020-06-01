@@ -16,7 +16,7 @@ pip install .
 
 Alternatively, you can install this library from the PyPI repository with:
 ```bash
-pip install NewsCrawler
+pip install NewsCrawler3
 ```
 
 ## Examples
