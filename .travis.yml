@@ -15,3 +15,4 @@ deploy:
   on:
     all_branches: true
   distributions: sdist bdist_wheel
+  skip_existing: true
