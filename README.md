@@ -1,6 +1,7 @@
 # NewsCrawler
 [![Build Status](https://travis-ci.org/NewsPipe/NewsCrawler.svg?branch=master)](https://travis-ci.org/NewsPipe/NewsCrawler)
 
+
 NewsCrawler is a Python library for crawling online newspaper articles. It has a minimal interface to insure maximum productivity with minimal work.
 
 Based on the popular libraries: [Newspaper3k](https://github.com/codelucas/newspaper), [BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/) and [requests](https://github.com/psf/requests)
