@@ -25,7 +25,7 @@ setup(
     url=about['__url__'],
     packages=['newscrawler'],
     include_package_data=True,
-    python_requires=">=3.7.*",
+    python_requires=">=3.5.*",
     install_requires=['requests', 'beautifulsoup4', 'six',
                       'newspaper3k', 'feedparser'],
     license=about['__license__'],
