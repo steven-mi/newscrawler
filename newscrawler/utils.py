@@ -1,4 +1,9 @@
-# based on https://github.com/dfm/feedfinder2
+"""
+newscrawler.utils.py
+~~~~~~~~~~~~~~~~
+
+This module contains all needed utility methods. Most of the code is based on https://github.com/dfm/feedfinder2
+"""
 import logging
 
 import requests
@@ -7,8 +12,13 @@ from bs4 import BeautifulSoup
 from six.moves.urllib import parse as urlparse
 
 
-
 def coerce_url(url):
+    """
+    Gets a url as string and returns it in the right format
+
+    :param url: str
+    :return: formatted url as string
+    """
     url = url.strip()
     if url.startswith("feed://"):
         return "http://{0}".format(url[7:])
@@ -19,6 +29,12 @@ def coerce_url(url):
 
 
 def get_page(url):
+    """
+    Gets a url as string and returns the corresponding html object.
+
+    :param url: str
+    :return: html object
+    """
     try:
         r = requests.get(url)
     except Exception as e:
@@ -29,6 +45,12 @@ def get_page(url):
 
 
 def is_rss(url):
+    """
+    This method gets a url as string and checks if it leads to a rss feed
+
+    :param url: str
+    :return: True if url leads to a rss feed, False otherwise
+    """
     text = get_page(url)
     if text is None:
         return False
@@ -40,6 +62,12 @@ def is_rss(url):
 
 
 def is_rss_data(data):
+    """
+    This methods gets html data and check if it is content from a rss feed
+
+    :param data: html object data
+    :return: True if it is content from a rss feed, False otherwise
+    """
     data = data.lower()
     if data.count("<html"):
         return False
@@ -47,17 +75,33 @@ def is_rss_data(data):
 
 
 def is_rss_url(url):
+    """
+    This method gets a url and checks if the url is a url from a rss feed
+    :param url: str
+    :return: True if it is from a rss feed, False otherwise
+    """
     return any(map(url.lower().endswith,
                    [".rss", ".rdf", ".xml", ".atom"]))
 
 
 
 def is_rsslike_url(url):
+    """
+    This method gets a url and checks if the url is a url from a rss feed
+
+    :param url: str
+    :return: True if it is from a rss feed, False otherwise
+    """
     return any(map(url.lower().count,
                    ["rss", "rdf", "xml", "atom", "feed"]))
 
 
 def url_feed_prob(url):
+    """
+    This method gets a url and calculateds the probability of it leading to a rss feed
+    :param url: str
+    :return: int
+    """
     if "comments" in url:
         return -2
     if "georss" in url:
@@ -70,10 +114,22 @@ def url_feed_prob(url):
 
 
 def sort_urls(feeds):
+    """
+    This method gets a list of rss feeds and sort is based on the probability of it leading to a rss feed
+    :param feeds: List of str, where the strings are urls
+    :return: sorted List of str
+    """
     return sorted(list(set(feeds)), key=url_feed_prob, reverse=True)
 
 
 def find_rss_urls(url):
+    """
+    This method gets a url and extracts the rss feed
+
+    :param url: str
+    :return: rss feed as str
+    """
+
     # Format the URL properly.
     url = coerce_url(url)
 
