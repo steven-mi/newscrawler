@@ -6,10 +6,9 @@ python:
 - 3.5
 
 install:
-- pip install pipenv
-- pipenv install --dev
+- pip install NewsCrawler
 script:
-- pipenv run pytest
+- pytest NewsCrawler
 deploy:
   provider: pypi
   user: stevenmi
