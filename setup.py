@@ -27,7 +27,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.5.*",
     install_requires=['requests', 'beautifulsoup4', 'six',
-                      'newspaper3k', 'feedparser'],
+                      'newspaper3k', 'feedparser', 'pandas', 'PyYAML'],
     license=about['__license__'],
     zip_safe=False,
     # entry_points={

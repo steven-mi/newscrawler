@@ -2,16 +2,22 @@
 tests.test_crawler.py
 ~~~~~~~~~~~~~~~~~~~~
 
-Test suite for the curves.py module that handles everything to do with
-supply and demand curves.
+Test suite for the crawler.py
 """
-
+import pandas as pd
 import pytest
+
+from newscrawler import Crawler
 
 
 class TestCrawler:
-    """Dummy test"""
 
-    def test_dummy(self):
-        """Dummy test"""
-        assert True == True
+    def test_faz(self):
+        crawler = Crawler("faz.net")
+        article_df = crawler.get_article_information_as_dataframe()
+        assert isinstance(article_df, pd.DataFrame)
+
+    def test_sueddeutsche(self):
+        crawler = Crawler("http://sueddeutsche.de")
+        article_df = crawler.get_article_information_as_dataframe()
+        assert isinstance(article_df, pd.DataFrame)
