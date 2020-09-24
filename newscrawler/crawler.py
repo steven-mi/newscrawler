@@ -32,7 +32,7 @@ def extract_article_text_from_html(html):
     article_newspaper = Article('')
     article_newspaper.set_html(html)
     article_newspaper.parse()
-    newspaper_text = article.text
+    newspaper_text = article_newspaper.text
     # run with newsplease
     article_newsplease = NewsPlease.from_html(html)
     newsplease_text = article_newsplease.cleaned_text
