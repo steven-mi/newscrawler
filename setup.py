@@ -32,7 +32,8 @@ setup(
                       'newspaper3k',
                       'feedparser',
                       'pandas',
-                      'news-please'],
+                      #'news-please',
+                      'goose3'],
     license=about['__license__'],
     zip_safe=False,
     # entry_points={
