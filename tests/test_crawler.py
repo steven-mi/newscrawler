@@ -18,6 +18,6 @@ class TestCrawler:
         assert isinstance(article_df, pd.DataFrame)
 
     def test_sueddeutsche(self):
-        crawler = Crawler("http://sueddeutsche.de")
+        crawler = Crawler(["http://sueddeutsche.de", "bild.de"])
         article_df = crawler.get_article_information_as_dataframe()
         assert isinstance(article_df, pd.DataFrame)
