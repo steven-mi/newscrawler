@@ -25,7 +25,7 @@ setup(
     url=about['__url__'],
     packages=['newscrawler'],
     include_package_data=True,
-    python_requires=">=3.5.*",
+    python_requires=">=3.6.*",
     install_requires=['requests',
                       'beautifulsoup4',
                       'six',
