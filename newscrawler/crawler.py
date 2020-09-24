@@ -14,30 +14,37 @@ import pandas as pd
 from time import mktime
 
 from newspaper import Article
+from newsplease import NewsPlease
 
 from newscrawler.extract_rss import get_page, extract_rss
 from newscrawler.utils import tag_dict_list_to_tag_list, coerce_url
 
 
-def extract_article_information_from_html(html):
+def extract_article_text_from_html(html):
     """
-    This methods gets a website as HTML, extracts text, summary, author, publish date, tags and title,
-    stores these informations in a dictionary and returns the dictionary
+    This methods gets a website the HTML as string and extracts the text of
+    the article
 
     :param html: a HTML object from package requests
-    :return: Dict Object with keys: text, summary, author, published, tags, title
+    :return: the article text as string
     """
-    article = Article('')
-    article.set_html(html)
-    article.parse()
-
-    article_information = {"text": article.text,
-                           "summary": article.summary,
-                           "author": str(article.authors).strip('[]'),
-                           "published": article.publish_date,
-                           "tags": article.tags,
-                           "title": article.title}
-    return article_information
+    # run with newspaper
+    article_newspaper = Article('')
+    article_newspaper.set_html(html)
+    article_newspaper.parse()
+    newspaper_text = article.text
+    # run with newsplease
+    article_newsplease = NewsPlease.from_html(html)
+    newsplease_text = article_newsplease.cleaned_text
+    # run with goose
+    #from goose3 import Goose
+    #extractor = Goose()
+    #article = extractor.extract(raw_html=html)
+    #text = article.cleaned_text
+    if len(newspaper_text.split(" ")) > len(newsplease_text.split(" ")):
+        return newspaper_text
+    else:
+        newsplease_text
 
 
 class Crawler:
@@ -99,7 +106,7 @@ class Crawler:
         article_information = {}
         for item in feed:
             article_html = get_page(item["link"])
-            html_article_information = extract_article_information_from_html(article_html)
+            html_article_information = extract_article_text_from_html(article_html)
 
             for key in self.NEWSKEYS:
                 value = item.get(key, None)
