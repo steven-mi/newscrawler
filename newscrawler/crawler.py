@@ -52,11 +52,11 @@ class Crawler:
     The Crawler object contains all the methods for extracting information from a given URL
 
     Args:
-        url (str): URL of a website as string
+        url ((str or List): A single url to a website or multiple websites as a list
 
     Attributes:
-        url (str): This is where we the website url
-        rss_feed (str): This is where we the rss feed url
+        url (str or List): A single url to a website or multiple websites as a list
+        rss_feed (List): List of RSS Feed as str
     """
 
     NEWSKEYS = ['title',
@@ -68,8 +68,18 @@ class Crawler:
                 'text']
 
     def __init__(self, url) -> str:
-        self.url = coerce_url(url)
-        self.rss_feed = extract_rss(self.url)[0]
+        if isinstance(url, str):
+            self.url = coerce_url(url)
+            self.rss_feed = extract_rss(self.url)
+        else:
+            self.url = [coerce_url(x) for x in url]
+            self.rss_feed = []
+            for url in self.url:
+                rss_feeds = extract_rss(self.url))
+                if not rss_feed:
+                    for rss_feed in rss_feeds:
+                        self.rss_feed.append(rss_feed)
+
 
     def get_article_information_as_dataframe(self):
         """
@@ -99,23 +109,24 @@ class Crawler:
 
         :return: all articles of the rss feed as dictionary
         """
-        logging.info("parsing: {}".format(self.rss_feed))
-        parsed_feed = feedparser.parse(self.rss_feed)
-        feed = parsed_feed.entries
-
         article_information = {}
-        for item in feed:
-            article_html = get_page(item["link"])
+        for rss_feed in self.rss_feed:
+            logging.info("parsing: {}".format(rss_feed))
+            parsed_feed = feedparser.parse(rss_feed)
+            feed = parsed_feed.entries
 
-            for key in self.NEWSKEYS:
-                value = item.get(key, None)
+            for item in feed:
+                article_html = get_page(item["link"])
 
-                if key == "published":
-                    value = mktime(item["published_parsed"])
-                elif key == " tags":
-                    value = tag_dict_list_to_tag_list(item["published_parsed"])
-                    value = ', '.join(value)
-                elif key == "text":
-                    value = extract_article_text_from_html(article_html)
-                article_information[key] = article_information.get(key, []) + [value]
+                for key in self.NEWSKEYS:
+                    value = item.get(key, None)
+
+                    if key == "published":
+                        value = mktime(item["published_parsed"])
+                    elif key == "tags":
+                        value = tag_dict_list_to_tag_list(item["published_parsed"])
+                        value = ', '.join(value)
+                    elif key == "text":
+                        value = extract_article_text_from_html(article_html)
+                    article_information[key] = article_information.get(key, []) + [value]
         return article_information
