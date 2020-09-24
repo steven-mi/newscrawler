@@ -106,7 +106,6 @@ class Crawler:
         article_information = {}
         for item in feed:
             article_html = get_page(item["link"])
-            html_article_information = extract_article_text_from_html(article_html)
 
             for key in self.NEWSKEYS:
                 value = item.get(key, None)
@@ -117,6 +116,6 @@ class Crawler:
                     value = tag_dict_list_to_tag_list(item["published_parsed"])
                     value = ', '.join(value)
                 elif key == "text":
-                    value = html_article_information[key]
+                    value = extract_article_text_from_html(article_html)
                 article_information[key] = article_information.get(key, []) + [value]
         return article_information
