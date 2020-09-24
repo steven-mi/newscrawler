@@ -75,7 +75,7 @@ class Crawler:
             self.url = [coerce_url(x) for x in url]
             self.rss_feed = []
             for url in self.url:
-                rss_feeds = extract_rss(url))
+                rss_feeds = extract_rss(url)
                 if not rss_feed:
                     for rss_feed in rss_feeds:
                         self.rss_feed.append(rss_feed)
