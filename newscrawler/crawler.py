@@ -14,7 +14,8 @@ import pandas as pd
 from time import mktime
 
 from newspaper import Article
-from newsplease import NewsPlease
+#from newsplease import NewsPlease
+from goose3 import Goose
 
 from newscrawler.extract_rss import get_page, extract_rss
 from newscrawler.utils import tag_dict_list_to_tag_list, coerce_url
@@ -34,17 +35,16 @@ def extract_article_text_from_html(html):
     article_newspaper.parse()
     newspaper_text = article_newspaper.text
     # run with newsplease
-    article_newsplease = NewsPlease.from_html(html)
-    newsplease_text = article_newsplease.cleaned_text
+    #article_newsplease = NewsPlease.from_html(html)
+    #newsplease_text = article_newsplease.cleaned_text
     # run with goose
-    #from goose3 import Goose
-    #extractor = Goose()
-    #article = extractor.extract(raw_html=html)
-    #text = article.cleaned_text
-    if len(newspaper_text.split(" ")) > len(newsplease_text.split(" ")):
+    goose_extractor = Goose()
+    goose_extractor = goose_extractor.extract(raw_html=html)
+    article_goose = goose_extractor.cleaned_text
+    if len(newspaper_text.split(" ")) > len(article_goose.split(" ")):
         return newspaper_text
     else:
-        newsplease_text
+        return article_goose
 
 
 class Crawler:
