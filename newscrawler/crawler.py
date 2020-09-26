@@ -120,7 +120,7 @@ class Crawler:
                     value = item.get(key, None)
 
                     if key == "published":
-                        value = mktime(item["published_parsed"])
+                        value = int(mktime(item["published_parsed"]))
                     elif key == "tags":
                         value = tag_dict_list_to_tag_list(item["published_parsed"])
                         value = ', '.join(value)
