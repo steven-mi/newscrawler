@@ -122,7 +122,7 @@ class Crawler:
                     if key == "published":
                         value = int(mktime(item["published_parsed"]))
                     elif key == "tags":
-                        value = tag_dict_list_to_tag_list(item["published_parsed"])
+                        value = tag_dict_list_to_tag_list(item["tags"])
                         value = ', '.join(value)
                     elif key == "text":
                         value = extract_article_text_from_html(article_html)
