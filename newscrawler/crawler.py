@@ -38,7 +38,6 @@ def extract_article_information_from_html(html):
 
     article_information["summary"] = article_newspaper.summary
     article_information["author"] = str(article_newspaper.authors).strip('[]')
-    article_information["published"] = article_newspaper.publish_date
     article_information["tags"] = article_newspaper.tags
     article_information["title"] = article_newspaper.title
 
@@ -130,7 +129,7 @@ class Crawler:
 
                     if key == "published":
                         value = int(mktime(item["published_parsed"]))
-                    elif not value and item.get("link", ""):
+                    elif not value:
                         if key == "tags":
                             value = tag_dict_list_to_tag_list(item[key])
                             value = ', '.join(value)
