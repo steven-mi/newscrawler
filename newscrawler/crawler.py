@@ -14,37 +14,47 @@ import pandas as pd
 from time import mktime
 
 from newspaper import Article
-#from newsplease import NewsPlease
+# from newsplease import NewsPlease
 from goose3 import Goose
 
 from newscrawler.extract_rss import get_page, extract_rss
 from newscrawler.utils import tag_dict_list_to_tag_list, coerce_url
 
 
-def extract_article_text_from_html(html):
+def extract_article_information_from_html(html):
     """
     This methods gets a website the HTML as string and extracts the text of
     the article
 
     :param html: a HTML object from package requests
-    :return: the article text as string
+    :return: the article information
     """
+    article_information = {}
+
     # run with newspaper
     article_newspaper = Article('')
     article_newspaper.set_html(html)
     article_newspaper.parse()
+
+    article_information["summary"] = article_newspaper.summary
+    article_information["author"] = str(article_newspaper.authors).strip('[]')
+    article_information["published"] = article_newspaper.publish_date
+    article_information["tags"] = article_newspaper.tags
+    article_information["title"] = article_newspaper.title
+
     newspaper_text = article_newspaper.text
     # run with newsplease
-    #article_newsplease = NewsPlease.from_html(html)
-    #newsplease_text = article_newsplease.cleaned_text
+    # article_newsplease = NewsPlease.from_html(html)
+    # newsplease_text = article_newsplease.cleaned_text
     # run with goose
     goose_extractor = Goose()
     goose_extractor = goose_extractor.extract(raw_html=html)
     article_goose = goose_extractor.cleaned_text
     if len(newspaper_text.split(" ")) > len(article_goose.split(" ")):
-        return newspaper_text
+        article_information["text"] = newspaper_text
     else:
-        return article_goose
+        article_information["text"] = article_goose
+    return article_information
 
 
 class Crawler:
@@ -77,7 +87,6 @@ class Crawler:
             for url in self.url:
                 rss_feed = extract_rss(url)[0]
                 self.rss_feed.append(rss_feed)
-
 
     def get_article_information_as_dataframe(self):
         """
@@ -115,16 +124,18 @@ class Crawler:
 
             for item in feed:
                 article_html = get_page(item["link"])
-
+                article_html_information = extract_article_information_from_html(article_html)
                 for key in self.NEWSKEYS:
                     value = item.get(key, None)
 
                     if key == "published":
                         value = int(mktime(item["published_parsed"]))
-                    elif key == "tags" and value:
-                        value = tag_dict_list_to_tag_list(item[key])
-                        value = ', '.join(value)
-                    elif key == "text":
-                        value = extract_article_text_from_html(article_html)
+                    elif not value and item.get("link", ""):
+                        if key == "tags":
+                            value = tag_dict_list_to_tag_list(item[key])
+                            value = ', '.join(value)
+                        else:
+                            value = article_html_information[key]
+
                     article_information[key] = article_information.get(key, []) + [value]
         return article_information
