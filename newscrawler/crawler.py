@@ -158,7 +158,7 @@ class Crawler:
                         value = tag_dict_list_to_tag_list(item[key])
                         value = ', '.join(value)
                     elif key == "link":
-                        continue
+                        pass
                     else:
                         value = article_html_information[key]
 
