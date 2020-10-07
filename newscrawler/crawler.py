@@ -159,7 +159,7 @@ class Crawler:
                         value = ', '.join(value)
                     elif key == "link":
                         pass
-                    else:
+                    elif not value:
                         value = article_html_information[key]
 
                     article_information[key] = article_information.get(key, []) + [value]
